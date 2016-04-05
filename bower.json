@@ -1,0 +1,16 @@
+{
+  "name": "data-pipe-elements",
+  "authors": [
+    "Chris Joel <cdata@google.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "dependencies": {
+    "emoji-selector": "notwaldorf/emoji-selector#^1.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.21"
+  }
+}

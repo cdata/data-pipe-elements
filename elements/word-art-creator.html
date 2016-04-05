@@ -1,0 +1,26 @@
+<link rel="import" href="./emoji-picker.html">
+<dom-module id="word-art-creator">
+  <template>
+    <style>
+      :host {
+        display: inline-flex;
+        position: relative;
+        background-color: #F16560;
+        padding: 2em;
+        @apply(--layout-horizontal);
+        @apply(--layout-wrap);
+        @apply(--layout-center-center);
+      }
+    </style>
+    <emoji-picker></emoji-picker>
+    <emoji-picker selected-emoji="🗻"></emoji-picker>
+    <paper-input label="The best words"></paper-input>
+  </template>
+  <script>
+    Polymer({
+      is: 'word-art-creator',
+
+      properties: {}
+    });
+  </script>
+</dom-module>

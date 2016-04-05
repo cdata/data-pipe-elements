@@ -1,0 +1,46 @@
+<link rel="import" href="./emoji-selector.html">
+<dom-module id="emoji-picker">
+  <template>
+    <style>
+      :host {
+        display: inline-block;
+        margin: 1em;
+        cursor: pointer;
+        @apply(--paper-font-common-base);
+      }
+
+      emoji-selector {
+        max-width: 480px;
+        max-height: 480px;
+      }
+
+      .dropdown-trigger {
+        font-size: 48px;
+      }
+    </style>
+    <paper-menu-button>
+      <span class="dropdown-trigger">[[selectedEmoji]]</span>
+      <emoji-selector class="dropdown-content" on-iron-select="onIronSelect"></emoji-selector>
+    </paper-menu-button>
+  </template>
+  <script>
+    Polymer({
+      is: 'emoji-picker',
+
+      properties: {
+        selectedEmoji: {
+          type: String,
+          value: '😂'
+        }
+      },
+
+      onIronSelect: function(event) {
+        this.select(event.detail.emoji);
+      },
+
+      select: function(emoji) {
+        this.selectedEmoji = emoji;
+      }
+    });
+  </script>
+</dom-module>
