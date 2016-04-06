@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=no">
     <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
     <link rel="import" href="../components.html">
-    <link rel="import" href="../elements/word-art-creator.html">
-    <link rel="import" href="../elements/word-art.html">
+    <link rel="import" href="../elements/emoji-word-art-app.html">
     <style is="custom-style">
       body {
         margin: 0;
@@ -31,21 +30,13 @@
         @apply(--layout-center-center);
       }
 
-      :root {
-        --emoji-selector-background: #5DA4F5;
-        --emoji-selector-foreground: #5D86F5;
-        --emoji-selector-color: #D5E8FE;
-        --emoji-selector-highlight: #fff;
-      }
-
       word-art-creator {
-        max-width: 50vw;
+        max-width: 60vw;
       }
 
     </style>
   </head>
   <body unresolved>
-    <!-- <word-art foreground="😂" background="🗻" text="polymer"></word-art> -->
-    <word-art-creator></word-art-creator>
+    <emoji-word-art-app></emoji-word-art-app>
   </body>
 </html>

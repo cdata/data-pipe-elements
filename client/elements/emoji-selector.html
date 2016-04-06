@@ -4,14 +4,14 @@
       :host {
         display: block;
         position: relative;
-        background-color: var(--emoji-selector-background, --paper-blue-grey-100);
+        background-color: var(--emoji-selector-background, --paper-teal-500);
         overflow: hidden;
 
         @apply(--paper-font-common-base);
-        
-        --paper-input-container-focus-color: var(--emoji-selector-background, --paper-blue-grey-100);
-        --paper-input-container-color: var(--emoji-selector-color, --paper-blue-grey-300);
-        --paper-input-container-input-color: var(--emoji-selector-highlight, --paper-blue-grey-50);
+
+        --paper-input-container-focus-color: var(--emoji-selector-background, --paper-teal-500);
+        --paper-input-container-color: var(--emoji-selector-color, --paper-teal-100);
+        --paper-input-container-input-color: var(--emoji-selector-highlight, --paper-teal-50);
       }
 
       iron-icon {
@@ -26,7 +26,7 @@
 
       .navigation {
         padding: 0 16px;
-        background-color: var(--emoji-selector-foreground, --paper-blue-grey-500);
+        background-color: var(--emoji-selector-foreground, --paper-teal-700);
       }
 
       .emoji-category {
@@ -53,7 +53,7 @@
       }
 
       .emoji:hover {
-        background-color: var(--emoji-selector-highlight, --paper-blue-grey-50);
+        background-color: var(--emoji-selector-highlight, --paper-teal-50);
       }
     </style>
     <iron-ajax url="../bower_components/emojilib/emojis.json" last-response="{{emojilib}}" auto></iron-ajax>
@@ -116,19 +116,19 @@
         'iron-select': 'onIronSelect'
       },
 
-      updateEmojiData: function(emojilib) {
-        var emojiCategories = {};
-        var emojiSearch = {};
+      updateEmojiData(emojilib) {
+        let emojiCategories = {};
+        let emojiSearch = {};
 
         Object.keys(emojilib).forEach(function(emojiName) {
-          var emoji = emojilib[emojiName];
-          var categoryName = emoji.category;
+          let emoji = emojilib[emojiName];
+          let categoryName = emoji.category;
 
           if (emojiName === 'keys' || categoryName === '_custom') {
             return;
           }
 
-          var category = emojiCategories[categoryName] || {
+          let category = emojiCategories[categoryName] || {
             name: categoryName,
             emoji: []
           };
@@ -163,11 +163,11 @@
         }));
       },
 
-      transformCategories: function(category) {
+      transformCategories(category) {
         this.translate3d(-category * 100 + '%', 0, 0, this.$.categories);
       },
 
-      setFilter: function(filter) {
+      setFilter(filter) {
         if (filter) {
           this.category = 7;
         } else if (this.category === 7 || this.category == null) {
@@ -175,18 +175,18 @@
         }
       },
 
-      clearFilter: function(category) {
+      clearFilter(category) {
         if (category && category !== 7) {
           this.filter = '';
         }
       },
 
-      filteredEmoji: function(filter, emojiSearch) {
+      filteredEmoji(filter, emojiSearch) {
         if (!filter) {
           return [];
         }
 
-        var groups = this.emojiSearch.filter(function(group) {
+        let groups = this.emojiSearch.filter(function(group) {
           if (group.keyword.indexOf(filter) > -1) {
             return true;
           }
@@ -197,11 +197,11 @@
         return Array.prototype.concat.apply([], groups);
       },
 
-      select: function(event) {
+      select(event) {
         this.fire('iron-select', { emoji: event.target.textContent });
       },
 
-      onIronSelect: function(event) {
+      onIronSelect(event) {
         if (event.target !== this) {
           event.stopImmediatePropagation();
         }

@@ -9,13 +9,14 @@
         @apply(--paper-font-common-base);
       }
 
+      .dropdown-trigger {
+        font-size: 48px;
+        line-height: 48px;
+      }
+
       emoji-selector {
         max-width: 480px;
         max-height: 480px;
-      }
-
-      .dropdown-trigger {
-        font-size: 48px;
       }
     </style>
     <paper-menu-button>
@@ -30,15 +31,16 @@
       properties: {
         selectedEmoji: {
           type: String,
-          value: '😂'
+          value: '😂',
+          notify: true
         }
       },
 
-      onIronSelect: function(event) {
+      onIronSelect(event) {
         this.select(event.detail.emoji);
       },
 
-      select: function(emoji) {
+      select(emoji) {
         this.selectedEmoji = emoji;
       }
     });
