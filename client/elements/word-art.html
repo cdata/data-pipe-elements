@@ -273,6 +273,7 @@
       ],
 
       createAnArt: function(foreground, background, text) {
+        console.log('hai', arguments);
         let bitmap = [];
 
         for (let i = 0; i < FONT_ROWS; ++i) {
@@ -293,6 +294,7 @@
           }).join(''));
         }
 
+        console.log(bitmap);
         Polymer.dom(this.root).textContent = bitmap.join('\n');
       },
 

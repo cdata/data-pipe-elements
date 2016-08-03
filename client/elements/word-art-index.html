@@ -1,0 +1,44 @@
+<link rel="import" href="./word-art-query.html">
+<link rel="import" href="./word-art.html">
+<dom-module id="word-art-index">
+  <template>
+    <style>
+      :host {
+        @apply(--layout-vertical);
+        @apply(--layout-center);
+      }
+      word-art {
+        --word-art-character-size: 12px;
+      }
+
+      a {
+        display: inline-block;
+        padding: 1em 1em 0;
+        margin: 1em;
+      }
+    </style>
+    <word-art-query id="query" data="{{wordArts}}"></word-art-query>
+    <template is="dom-repeat" items="[[wordArts]]" as="model">
+      <a href="#/show/[[model.id]]">
+        <word-art
+            foreground="[[model.foreground]]"
+            background="[[model.background]]"
+            text="[[model.text]]">
+        </word-art>
+      </a>
+    </template>
+  </template>
+  <script>
+    Polymer({
+      is: 'word-art-index',
+
+      attached() {
+        this.refresh()
+      },
+
+      refresh() {
+        this.$.query.fetch();
+      }
+    });
+  </script>
+</dom-module>

@@ -1,0 +1,71 @@
+<link rel="import" href="./word-art-creator.html">
+<link rel="import" href="./word-art-index.html">
+<link rel="import" href="./word-art-model.html">
+<link rel="import" href="./word-art.html">
+<dom-module id="emoji-word-art-app">
+  <template>
+    <carbon-location route="{{route}}" use-hash-as-path></carbon-location>
+    <carbon-route
+        route="[[route]]"
+        pattern="/:action"
+        data="{{actionData}}"
+        tail="{{actionRoute}}">
+    </carbon-route>
+    <carbon-route
+        route="[[actionRoute]]"
+        data="{{idData}}"
+        pattern="/:id">
+    </carbon-route>
+    <iron-pages
+        selected="{{actionData.action}}"
+        attr-for-selected="id">
+      <section id="new">
+        <word-art-creator on-word-art-created="goToIndex"></word-art-creator>
+      </section>
+      <section id="list">
+        <word-art-index id="index"></word-art-index>
+      </section>
+      <section id="show">
+        <word-art-model
+            model-id="[[idData.id]]"
+            data="{{wordArt}}">
+        </word-art-model>
+        <word-art
+            foreground="[[wordArt.foreground]]"
+            background="[[wordArt.background]]"
+            text="[[wordArt.text]]">
+        </word-art>
+      </section>
+    </iron-pages>
+  </template>
+  <script>
+    Polymer({
+      is: 'emoji-word-art-app',
+
+      properties: {
+        wordArt: {
+          type: Object,
+          notify: true,
+          observer: 'debug'
+        }
+      },
+
+      debug() {
+        console.log(this.wordArt);
+      },
+
+      attached() {
+        this.async(function() {
+          if (!this.route.path) {
+            this.set('route.path', '/new');
+          }
+        });
+      },
+
+      goToIndex() {
+        this.set('route.path', '/list');
+        this.$.index.refresh();
+      }
+    });
+  </script>
+</dom-module>

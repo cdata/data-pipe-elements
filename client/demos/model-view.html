@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Model + View</title>
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=no">
+    <link rel="import" href="../components.html">
+    <link rel="import" href="../elements/word-art-model.html">
+    <link rel="import" href="../elements/word-art.html">
+    <style>
+      body {
+        background-color: #419B92;
+      }
+    </style>
+  </head>
+  <body>
+
+    <template is="dom-bind">
+      <word-art-model
+          model-id="1"
+          data="{{wordArt}}">
+      </word-art-model>
+      <word-art
+          foreground="[[wordArt.foreground]]"
+          background="[[wordArt.background]]"
+          text="[[wordArt.text]]">
+      </word-art>
+    </template>
+
+  </body>
+</html>

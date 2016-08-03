@@ -1,0 +1,117 @@
+<!doctype html>
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>word-art-model tests</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="/bower_components/web-component-tester/browser.js"></script>
+
+  <link rel="import" href="../components.html">
+  <link rel="import" href="../elements/word-art-model.html">
+</head>
+<body>
+
+  <test-fixture id="BasicModel">
+    <template>
+      <word-art-model></word-art-model>
+    </template>
+  </test-fixture>
+  <test-fixture id="ModelWithId">
+    <template>
+      <word-art-model model-id="1"></word-art-model>
+    </template>
+  </test-fixture>
+
+  <script>
+    suite('<word-art-model>', () => {
+      let wordArtModel;
+      let requestOptions;
+      let server;
+
+
+      setup(() => {
+        server = sinon.fakeServer.create();
+        server.respondWith("GET", "/api/word_art/1", [
+          200,
+          { "Content-Type": "application/json" },
+          '{ "id": 1, "foreground": "😂", "background": "🍕", "text": "foo"}'
+        ]);
+        server.respondWith("PUT", "/api/word_art/1", function(xhr) {
+          xhr.respond(
+              200,
+              { "Content-Type": "application/json" },
+              xhr.requestBody);
+        });
+      });
+
+      teardown(() => {
+        server.restore();
+      });
+
+      suite('a new model', () => {
+        setup(() => {
+          wordArtModel = fixture('BasicModel');
+        });
+
+        test('requests API resource when modelId changes', () => {
+          wordArtModel.modelId = 1;
+
+          let request = server.requests[0];
+
+          expect(request.method).to.be.equal('GET');
+          expect(request.url).to.be.equal('/api/word_art/1');
+          expect(request.body).to.not.be.ok;
+        });
+      });
+
+      suite('a model with a modelId', () => {
+        setup((done) => {
+          wordArtModel = fixture('ModelWithId');
+          wordArtModel.addEventListener('model-sync', function onModelSync() {
+            wordArtModel.removeEventListener('model-sync', onModelSync);
+            done();
+          });
+          server.respond();
+        });
+
+        test('has remote data', () => {
+          expect(wordArtModel.data).to.be.eql({
+            id: 1,
+            foreground: "😂",
+            background: "🍕",
+            text: "foo"
+          });
+        });
+
+        test('updates API request when data changes', (done) => {
+          wordArtModel.addEventListener('model-sync', () => {
+            let request = server.requests[server.requests.length - 1];
+
+            expect(request.method).to.be.equal('PUT');
+            expect(request.url).to.be.equal('/api/word_art/1');
+            expect(request.body).to.not.be.equal(
+                '{"id":1,"foreground":"😂","background":"🍕","text":"bar"}');
+            done();
+          });
+
+          wordArtModel.set('data.text', 'bar');
+          Polymer.Base.async(() => {
+            server.respond();
+          }, 1);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<dom-module id="word-art-query">
+  <template>
+    <iron-ajax
+        id="ajax"
+        method="GET"
+        url="[[computeUrl(location, filter)]]"
+        last-response="{{resources}}">
+    </iron-ajax>
+  </template>
+  <script>
+    Polymer({
+      is: 'word-art-query',
+
+      properties: {
+        location: {
+          type: String,
+          value: '/api/word_art'
+        },
+
+        filter: {
+          type: String,
+          value: ''
+        },
+
+        data: {
+          type: Array,
+          readOnly: true,
+          notify: true,
+          value: function() {
+            return [];
+          }
+        }
+      },
+
+      observers: [
+        'resourcesChanged(resources)'
+      ],
+
+      computeUrl(location, filter) {
+        return filter ? `${location}?filter=${filter}` : location;
+      },
+
+      resourcesChanged(resources) {
+        this._setData((resources || []).reverse());
+      },
+
+      fetch() {
+        this.$.ajax.generateRequest();
+      }
+    });
+  </script>
+</dom-module>

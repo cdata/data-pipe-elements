@@ -14,5 +14,8 @@
     "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.21",
     "carbon-route": "polymerelements/carbon-route#^0.8.4",
     "paper-icon-button": "polymerelements/paper-icon-button#^1.0.0"
+  },
+  "devDependencies": {
+    "web-component-tester": "^4.2.2"
   }
 }

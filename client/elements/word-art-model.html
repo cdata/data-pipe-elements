@@ -1,0 +1,123 @@
+<dom-module id="word-art-model">
+  <template>
+    <iron-ajax
+        id="ajax"
+        content-type="application/json"
+        url="[[computeUrl(location, modelId)]]"
+        last-response="{{resource}}"></iron-ajax>
+  </template>
+  <script>
+    Polymer({
+      is: 'word-art-model',
+
+      properties: {
+        location: {
+          type: String,
+          value: '/api/word_art'
+        },
+
+        modelId: {
+          type: String,
+          value: null,
+          notify: true,
+          observer: 'modelIdChanged'
+        },
+
+        data: {
+          type: Object,
+          notify: true
+        },
+
+        resource: {
+          type: Object,
+          observer: 'resourceChanged'
+        },
+
+        syncing: {
+          type: Boolean,
+          value: false
+        }
+      },
+
+      observers: [
+        'dataChanged(data.*)'
+      ],
+
+      ready() {
+        if (this.isNew) {
+          this.data = this.defaults();
+        }
+      },
+
+      defaults() {
+        return {
+          foreground: '😂',
+          background: '🌊',
+          text: ''
+        };
+      },
+
+      get isNew() {
+        return this.modelId == null;
+      },
+
+      read() {
+        this.sync('GET', null);
+      },
+
+      create() {
+        this.sync('POST', this.data);
+      },
+
+      update() {
+        this.sync('PUT', this.data);
+      },
+
+      sync(method, data) {
+        if ((method !== 'POST' && this.isNew) ||
+            (method === 'POST' && !this.isNew)) {
+          return;
+        }
+
+        this.$.ajax.method = method;
+        this.$.ajax.body = data;
+        this.syncing = this.$.ajax.generateRequest()
+            .completes
+            .catch(error => console.error(error))
+            .then(() => this.syncing = null);
+      },
+
+      computeUrl(location, modelId) {
+        return modelId ? `${location}/${modelId}` : location;
+      },
+
+      modelIdChanged(modelId, oldModelId) {
+        if (this.syncing) {
+          return;
+        }
+
+        if (modelId != null) {
+          this.read();
+        } else if (oldModelId != null) {
+          this.data = this.defaults();
+        }
+      },
+
+      dataChanged(change) {
+        if (this.isNew || this.syncing) {
+          return;
+        }
+
+        this.debounce('update', this.update, 1);
+      },
+
+      resourceChanged(resource) {
+        if (resource) {
+          this.data = Object.assign({}, resource);
+          this.modelId = this.data.id;
+          this.fire('model-sync');
+        }
+      }
+    });
+  </script>
+</dom-module>
