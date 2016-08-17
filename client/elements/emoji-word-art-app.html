@@ -4,18 +4,18 @@
 <link rel="import" href="./word-art.html">
 <dom-module id="emoji-word-art-app">
   <template>
-    <carbon-location route="{{route}}" use-hash-as-path></carbon-location>
-    <carbon-route
+    <app-location route="{{route}}" use-hash-as-path></app-location>
+    <app-route
         route="[[route]]"
         pattern="/:action"
         data="{{actionData}}"
         tail="{{actionRoute}}">
-    </carbon-route>
-    <carbon-route
+    </app-route>
+    <app-route
         route="[[actionRoute]]"
         data="{{idData}}"
         pattern="/:id">
-    </carbon-route>
+    </app-route>
     <iron-pages
         selected="{{actionData.action}}"
         attr-for-selected="id">

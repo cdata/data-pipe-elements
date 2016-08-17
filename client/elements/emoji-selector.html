@@ -1,3 +1,5 @@
+<base href="https://polygit2.appspot.com/emojilib+muan+1.0.1/components/">
+
 <dom-module id="emoji-selector">
   <template>
     <style>
@@ -56,7 +58,7 @@
         background-color: var(--emoji-selector-highlight, --paper-teal-50);
       }
     </style>
-    <iron-ajax url="../bower_components/emojilib/emojis.json" last-response="{{emojilib}}" auto></iron-ajax>
+    <iron-ajax url="emojilib/emojis.json" last-response="{{emojilib}}" auto></iron-ajax>
     <section class="navigation">
       <paper-input label="Filter" id="search" value="{{filter}}"></paper-input>
       <paper-tabs selected="{{category}}" id="tabs" tabindex="0">
